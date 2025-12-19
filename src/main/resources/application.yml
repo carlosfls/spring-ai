@@ -5,3 +5,7 @@ spring:
   ai:
     openai:
       api-key: ${OPEN_AI_SECRET}
+
+    ollama:
+      chat:
+        model: gemma:2b

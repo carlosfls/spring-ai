@@ -19,6 +19,6 @@ public class AskController {
 
     @PostMapping("/ask")
     public ResponseEntity<Answer> askQuestion(@RequestBody Question question) {
-        return ResponseEntity.ok(boardGameService.askQuestion(question.question()));
+        return ResponseEntity.ok(boardGameService.askQuestion(question));
     }
 }

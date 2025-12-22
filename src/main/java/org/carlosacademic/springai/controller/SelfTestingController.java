@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api")
-public class AskController {
+@RequestMapping("/self-test")
+public class SelfTestingController {
 
     private final BoardGameService boardGameService;
 
-    public AskController(@Qualifier(value = "open-ai-board-game-service") BoardGameService boardGameService) {
+    public SelfTestingController(@Qualifier(value = "self-evaluation-board-game-service") BoardGameService boardGameService) {
         this.boardGameService = boardGameService;
     }
 
-    @PostMapping("/ask")
-    public ResponseEntity<Answer> askQuestion(@RequestBody Question question) {
+    @PostMapping("/evaluate")
+    public ResponseEntity<Answer> evaluate(@RequestBody Question question) {
         return ResponseEntity.ok(boardGameService.askQuestion(question));
     }
 }

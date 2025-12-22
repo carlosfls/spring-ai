@@ -5,7 +5,7 @@ import org.carlosacademic.springai.model.Question;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.stereotype.Service;
 
-@Service
+@Service("open-ai-board-game-service")
 public class OpenIABoardGameService implements BoardGameService{
 
     private final ChatClient chatClient;

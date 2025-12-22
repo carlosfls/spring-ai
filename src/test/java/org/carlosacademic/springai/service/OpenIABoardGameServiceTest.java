@@ -10,6 +10,7 @@ import org.springframework.ai.chat.evaluation.RelevancyEvaluator;
 import org.springframework.ai.evaluation.EvaluationRequest;
 import org.springframework.ai.evaluation.EvaluationResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -18,6 +19,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 class OpenIABoardGameServiceTest {
 
     @Autowired
+    @Qualifier("self-evaluation-board-game-service")
     private BoardGameService boardGameService;
 
     @Autowired

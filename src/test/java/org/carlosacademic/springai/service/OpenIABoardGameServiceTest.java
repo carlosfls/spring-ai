@@ -41,7 +41,7 @@ class OpenIABoardGameServiceTest {
     @Test
     void askQuestionAndEvaluateResponse() {
         String text = "What is the sky blue?";
-        Question question = new Question(text);
+        Question question = new Question("test",text);
 
         Answer answer = boardGameService.askQuestion(question);
 
@@ -59,7 +59,7 @@ class OpenIABoardGameServiceTest {
     @Test
     void evaluateFactuality() {
         String text = "What is the sky blue?";
-        Question question = new Question(text);
+        Question question = new Question("test",text);
 
         Answer answer = boardGameService.askQuestion(question);
 

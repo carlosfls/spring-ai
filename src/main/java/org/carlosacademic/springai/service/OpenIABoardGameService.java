@@ -16,11 +16,13 @@ public class OpenIABoardGameService implements BoardGameService{
 
     @Override
     public Answer askQuestion(Question question) {
+        String text = "Answer this question about: " + question.title() + ":"
+                + question.question();
         var answer = chatClient.prompt()
-                .user(question.question())
+                .user(text)
                 .call()
                 .content();
 
-        return new Answer(answer);
+        return new Answer(question.title(), answer);
     }
 }

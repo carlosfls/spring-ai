@@ -49,12 +49,12 @@ public class SelfEvaluationBoardGameService implements BoardGameService{
 
         evaluateResponse(question, answer);
 
-        return new Answer(answer);
+        return new Answer(question.title(), answer);
     }
 
     @Recover
     public Answer recover(AnswerNotRelevantException exception){
-        return new Answer(exception.getMessage());
+        return new Answer("Error",exception.getMessage());
     }
 
     private void evaluateResponse(Question question, String answer) {

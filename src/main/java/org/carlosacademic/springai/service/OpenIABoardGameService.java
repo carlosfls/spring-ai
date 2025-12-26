@@ -24,6 +24,9 @@ public class OpenIABoardGameService implements BoardGameService{
         this.chatClient = chatClient.build();
     }
 
+    /**
+     * The prompt accepts a String or a Resource.
+     */
     @Override
     public Answer askQuestion(Question question) {
         var answer = chatClient.prompt()

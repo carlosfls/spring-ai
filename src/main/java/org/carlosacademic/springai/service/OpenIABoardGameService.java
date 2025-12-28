@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 public class OpenIABoardGameService implements BoardGameService{
 
     private final ChatClient chatClient;
+    private final RulesService rulesService;
 
     /**
      * Using a resource to load the prompt template from the classpath.
@@ -20,8 +21,9 @@ public class OpenIABoardGameService implements BoardGameService{
     @Value("classpath:/prompts/questionPromptTemplate.st")
     Resource questionPromptTemplate;
 
-    public OpenIABoardGameService(ChatClient.Builder chatClient) {
+    public OpenIABoardGameService(ChatClient.Builder chatClient, RulesService rulesService) {
         this.chatClient = chatClient.build();
+        this.rulesService = rulesService;
     }
 
     /**
@@ -29,11 +31,13 @@ public class OpenIABoardGameService implements BoardGameService{
      */
     @Override
     public Answer askQuestion(Question question) {
+        var rules = rulesService.getRulesFor(question.title());
         var answer = chatClient.prompt()
                 .user(promptUserSpec ->
                         promptUserSpec.text(questionPromptTemplate)
                                 .param("title", question.title())
                                 .param("question", question.question())
+                                .param("rules", rules)
                 )
                 .call()
                 .content();

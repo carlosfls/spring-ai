@@ -12,9 +12,9 @@ import java.nio.charset.Charset;
  * Service for getting the rules of a file a return into a String
  */
 @Service
-public class RulesService {
+public class ContextService {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(RulesService.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ContextService.class);
 
     public String getRulesFor(String name){
         try {
@@ -25,7 +25,7 @@ public class RulesService {
                     .getResource(filename)
                     .getContentAsString(Charset.defaultCharset());
         }catch (IOException e){
-            LOGGER.error(e.getMessage());
+            LOGGER.info("Context not found using the default context");
         }
         return "";
     }

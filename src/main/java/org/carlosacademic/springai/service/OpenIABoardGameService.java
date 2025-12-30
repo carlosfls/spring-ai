@@ -29,8 +29,8 @@ public class OpenIABoardGameService implements BoardGameService{
 
     /**
      * Adding the options for the chat prompt.
-     * Temperature is one option set to make the chat more deterministic or more random.
-     * The values are between 0 and 2 with much higher value meaning more randomness.
+     * The entity method is used to convert the response into an Answer object.
+     * Not all the models do the conversion.
      */
     @Override
     public Answer askQuestion(Question question) {
@@ -40,7 +40,7 @@ public class OpenIABoardGameService implements BoardGameService{
                 .temperature(0.7)
                 .build();
 
-        var answer = chatClient.prompt()
+        return chatClient.prompt()
                 .system(promptSystemSpec ->
                         promptSystemSpec.text(promptTemplate)
                                 .param("title", question.title())
@@ -49,8 +49,6 @@ public class OpenIABoardGameService implements BoardGameService{
                 .user(question.question())
                 .options(chatOptions)
                 .call()
-                .content();
-
-        return new Answer(question.title(), answer);
+                .entity(Answer.class);
     }
 }

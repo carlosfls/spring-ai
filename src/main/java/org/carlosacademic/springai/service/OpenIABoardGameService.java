@@ -2,7 +2,13 @@ package org.carlosacademic.springai.service;
 
 import org.carlosacademic.springai.model.Answer;
 import org.carlosacademic.springai.model.Question;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.ResponseEntity;
+import org.springframework.ai.chat.metadata.ChatResponseMetadata;
+import org.springframework.ai.chat.metadata.Usage;
+import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.chat.prompt.ChatOptions;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -11,6 +17,7 @@ import org.springframework.stereotype.Service;
 @Service("open-ai-board-game-service")
 public class OpenIABoardGameService implements BoardGameService{
 
+    private final Logger logger = LoggerFactory.getLogger(OpenIABoardGameService.class);
     private final ChatClient chatClient;
     private final ContextService rulesService;
 
@@ -40,7 +47,8 @@ public class OpenIABoardGameService implements BoardGameService{
                 .temperature(0.7)
                 .build();
 
-        return chatClient.prompt()
+        //The response entity has the response chat with metadata and the entity object
+        ResponseEntity<ChatResponse, Answer> responseEntity = chatClient.prompt()
                 .system(promptSystemSpec ->
                         promptSystemSpec.text(promptTemplate)
                                 .param("title", question.title())
@@ -49,6 +57,26 @@ public class OpenIABoardGameService implements BoardGameService{
                 .user(question.question())
                 .options(chatOptions)
                 .call()
-                .entity(Answer.class);
+                .responseEntity(Answer.class);
+
+        var response = responseEntity.response();
+
+        //getting the metadata from the response
+        if(response != null){
+            ChatResponseMetadata metadata = response.getMetadata();
+            logUsage(metadata.getUsage());
+        }
+
+        return responseEntity.entity();
+
+    }
+
+    /**
+     * Logging the usage of the API.
+     */
+    private void logUsage(Usage usage){
+        logger.info("Total tokens used: {}",usage.getTotalTokens());
+        logger.info("Prompt tokens used: {}",usage.getPromptTokens());
+        logger.info("Completion tokens used: {}",usage.getCompletionTokens());
     }
 }

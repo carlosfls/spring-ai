@@ -35,9 +35,6 @@ public class OpenIABoardGameService implements BoardGameService{
     }
 
     /**
-     * Adding the options for the chat prompt.
-     * The entity method is used to convert the response into an Answer object.
-     * Not all the models do the conversion.
      */
     @Override
     public Answer askQuestion(Question question) {
